@@ -1,21 +1,47 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Fundo geral com degradê sutil (Rosa para Branco) */
 body {
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #FFF5F5 0%, #FEF2F2 50%, #FFE4E6 100%);
+  background: linear-gradient(135deg, #FEF2F2 0%, #FFFFFF 100%);
   min-height: 100vh;
-  color: #1F2937;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Estilo global para botões de múltipla escolha (turno, tipo, etc) */
-.btn-opcao {
-  @apply py-4 rounded-2xl border-2 font-semibold transition-all duration-200 shadow-sm bg-white text-gray-600 border-gray-200 hover:border-red-300;
+/* Animação de "surgir" para as telas e botões */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.btn-opcao-selecionada {
-  @apply border-red-600 bg-red-50 text-red-700 shadow-md scale-[1.02];
+.animate-fade-in {
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+
+/* Efeito de Vidro (Glassmorphism) para os cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 32px 0 rgba(220, 38, 38, 0.05); /* Sombra vermelha bem sutil */
+}
+
+/* Botão vermelho com brilho suave ao passar o mouse */
+.btn-primary {
+  @apply bg-red-600 text-white font-bold py-4 rounded-2xl transition-all duration-300 shadow-lg shadow-red-200;
+}
+.btn-primary:hover {
+  @apply bg-red-700 transform -translate-y-1 shadow-xl shadow-red-300;
+}
+.btn-primary:active {
+  @apply transform translate-y-0 scale-95;
 }
