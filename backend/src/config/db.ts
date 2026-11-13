@@ -1,5 +1,6 @@
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
+
 dotenv.config();
 
 export const pool = mysql.createPool({
@@ -9,4 +10,4 @@ export const pool = mysql.createPool({
   database: process.env.DB_NAME || 'fhdod_experiencia',
   waitForConnections: true,
   connectionLimit: 10,
-});
+}); 

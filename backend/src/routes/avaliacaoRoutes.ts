@@ -7,4 +7,4 @@ const controller = new AvaliacaoController();
 router.post('/', controller.criar);
 router.get('/dashboard', controller.dashboard);
 
-export default router;
+export default router; 
