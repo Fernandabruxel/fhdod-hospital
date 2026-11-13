@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Fundo suave para todo o sistema */
+body {
+  background-color: #FEF2F2; /* bg-fhdod-light */
+  color: #333;
+  -webkit-font-smoothing: antialiased;
+}
