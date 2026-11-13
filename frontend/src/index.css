@@ -2,54 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-<<<<<<< HEAD
-/* Fundo suave para todo o sistema */
 body {
-  background-color: #FEF2F2; /* bg-fhdod-light */
+  background-color: #FEF2F2;
   color: #333;
   -webkit-font-smoothing: antialiased;
-=======
-/* Fundo geral com degradê sutil (Rosa para Branco) */
-body {
-  background: linear-gradient(135deg, #FEF2F2 0%, #FFFFFF 100%);
-  min-height: 100vh;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Animação de "surgir" para as telas e botões */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fadeInUp 0.4s ease-out forwards;
-}
-
-/* Efeito de Vidro (Glassmorphism) para os cards */
-.glass-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 8px 32px 0 rgba(220, 38, 38, 0.05); /* Sombra vermelha bem sutil */
-}
-
-/* Botão vermelho com brilho suave ao passar o mouse */
-.btn-primary {
-  @apply bg-red-600 text-white font-bold py-4 rounded-2xl transition-all duration-300 shadow-lg shadow-red-200;
-}
-.btn-primary:hover {
-  @apply bg-red-700 transform -translate-y-1 shadow-xl shadow-red-300;
-}
-.btn-primary:active {
-  @apply transform translate-y-0 scale-95;
->>>>>>> c9d6cd021894003d615d3045a8345270e5e7d58e
 }
