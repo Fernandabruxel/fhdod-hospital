@@ -18,6 +18,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
 app.use('/api/avaliacoes', rotasAvaliacao);
 
 app.listen(3333, () => {
-  console.log('🚀 Servidor FHDOD rodando na porta 3333');
-  console.log('📄 Swagger disponível em http://localhost:3333/api-docs');
+  console.log(' Servidor FHDOD rodando na porta 3333');
+  console.log(' Swagger disponível em http://localhost:3333/api-docs');
 });

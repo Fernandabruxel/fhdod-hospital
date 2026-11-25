@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
-import { Activity, Users, Star } from 'lucide-react';
+import { Activity, Users, Star, ClipboardList, MessageSquare } from 'lucide-react';
 
 export function Dashboard() {
+  const navigate = useNavigate();
   const [dados, setDados] = useState({ total: 0, nps_medio: 0 });
 
   useEffect(() => {
@@ -12,49 +14,55 @@ export function Dashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8 font-sans">
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-10">
-          <div>
-            <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Painel FHDOD</h1>
-            <p className="text-gray-500 mt-1">Visão geral da experiência do paciente</p>
-          </div>
-          <span className="flex items-center gap-2 bg-red-100 text-red-700 px-4 py-2 rounded-full text-sm font-bold shadow-sm">
-            <Activity size={16} className="animate-pulse" />
-            Tempo Real
-          </span>
+    <div className="pesquisa-container" style={{ flexDirection: 'column' }}>
+      
+      {/* Header com Logo e Botões */}
+      <div className="header-pagina">
+        <img src="/logo_FHDOD.png" alt="Logo FHDOD" className="logo-hospital" style={{ marginBottom: 0 }} />
+        <div className="botoes-header">
+          <button onClick={() => navigate('/pesquisa')} className="botao-secundario">
+            <ClipboardList size={18} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }}/> 
+            Nova Pesquisa
+          </button>
+          <button onClick={() => navigate('/ouvidoria')} className="botao-secundario">
+            <MessageSquare size={18} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }}/> 
+            Ouvidoria
+          </button>
         </div>
+      </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex items-center gap-4">
-            <div className="p-4 bg-red-50 rounded-2xl">
-              <Users size={32} className="text-red-600" />
+      <div className="pesquisa-card" style={{ maxWidth: '800px' }}>
+        <div className="pesquisa-conteudo">
+          <div className="titulo-principal">
+            <Activity className="icone-destaque" size={32} />
+            <h1>Painel FHDOD</h1>
+          </div>
+          <p className="subtitulo">Visão geral da experiência do paciente em tempo real.</p>
+
+          {/* Cards lado a lado no PC, um embaixo do outro no celular */}
+          <div className="grid-cards-dashboard">
+            <div className="card-info">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                <Users size={24} color="#DC2626" />
+                <span style={{ fontWeight: '600', color: '#4B5563' }}>Total de Avaliações</span>
+              </div>
+              <h2 style={{ fontSize: '40px', margin: 0 }}>{dados.total}</h2>
             </div>
-            <div>
-              <p className="text-gray-500 font-medium">Total de Avaliações</p>
-              <p className="text-4xl font-extrabold text-gray-900">{dados.total}</p>
+
+            <div className="card-info">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                <Star size={24} color="#F59E0B" />
+                <span style={{ fontWeight: '600', color: '#4B5563' }}>Média NPS</span>
+              </div>
+              <h2 style={{ fontSize: '40px', margin: 0 }}>{Number(dados.nps_medio).toFixed(1)}</h2>
             </div>
           </div>
 
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex items-center gap-4">
-            <div className="p-4 bg-yellow-50 rounded-2xl">
-              <Star size={32} className="text-yellow-500" />
-            </div>
-            <div>
-              <p className="text-gray-500 font-medium">Média NPS (0 a 10)</p>
-              <p className="text-4xl font-extrabold text-gray-900">{Number(dados.nps_medio).toFixed(1)}</p>
-            </div>
+          <div style={{ marginTop: '30px', padding: '20px', background: '#FEF2F2', borderRadius: '12px', borderLeft: '4px solid #DC2626' }}>
+            <p style={{ margin: 0, fontWeight: '500', color: '#991B1B' }}>
+              O sistema está operacional. As avaliações da pesquisa estão sendo registradas em tempo real no banco de dados.
+            </p>
           </div>
-        </div>
-
-        {/* Banner de status */}
-        <div className="bg-gradient-to-r from-red-600 to-red-500 rounded-3xl p-8 text-white shadow-lg">
-          <h2 className="text-2xl font-bold mb-2">Status do Sistema</h2>
-          <p className="text-red-100">
-            O servidor está operacional e as avaliações estão sendo registradas em tempo real.
-          </p>
         </div>
       </div>
     </div>

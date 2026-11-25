@@ -1,59 +1,122 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { MessageSquare, ArrowLeft, AlertCircle, Lightbulb, Heart, Send } from 'lucide-react';
 
 export function Ouvidoria() {
-  const [tipo, setTipo] = useState('Reclamação');
+  const navigate = useNavigate();
+  const [tipo, setTipo] = useState('reclamacao'); 
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert('Manifestação enviada à Ouvidoria com sucesso!');
+  // CardSelecao ajustado para não distorcer os ícones
+  const CardSelecao = ({ id, icone: Icone, label }: any) => {
+    const isAtivo = tipo === id;
+    return (
+      <button
+        onClick={() => setTipo(id)}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '16px 8px', // Padding equilibrado
+          borderRadius: '16px',
+          border: `2px solid ${isAtivo ? '#DC2626' : '#E5E7EB'}`,
+          backgroundColor: isAtivo ? '#FEF2F2' : '#FFFFFF',
+          cursor: 'pointer',
+          transition: 'all 0.2s ease',
+          width: '100%',
+          gap: '8px',
+          height: '100px' // Força todos a terem a mesma altura
+        }}
+      >
+        {/* Tamanho do ícone fixo e cor controlada */}
+        <div style={{ height: '32px', display: 'flex', alignItems: 'center' }}>
+          <Icone size={28} color={isAtivo ? '#DC2626' : '#9CA3AF'} strokeWidth={isAtivo ? 2.5 : 1.5} />
+        </div>
+        <span style={{ 
+          fontSize: '14px', 
+          fontWeight: isAtivo ? '700' : '500', 
+          color: isAtivo ? '#DC2626' : '#4B5563' 
+        }}>
+          {label}
+        </span>
+      </button>
+    );
   };
 
   return (
-    <div className="min-h-screen bg-red-50 p-6 flex flex-col items-center">
-      <div className="w-full max-w-2xl bg-white p-8 rounded-2xl shadow-sm mt-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">Ouvidoria</h1>
-        <p className="text-gray-500 mb-6">Registre uma reclamação, sugestão ou elogio. A identificação é opcional.</p>
-
-        <div className="flex gap-4 mb-8">
-          {['Reclamação', 'Sugestão', 'Elogio'].map((t) => (
-            <button
-              key={t}
-              onClick={() => setTipo(t)}
-              className={`flex-1 py-4 rounded-xl border-2 font-semibold flex flex-col items-center gap-2 transition
-                ${tipo === t ? 'border-red-600 bg-red-50 text-red-700' : 'border-gray-200 text-gray-600 hover:border-red-300'}`}
+    <div className="pesquisa-container">
+      <div className="pesquisa-card" style={{ maxWidth: '650px' }}>
+        <div className="pesquisa-conteudo">
+          
+          {/* Header com seta limpa */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+            <button 
+              onClick={() => navigate('/')} 
+              style={{ 
+                background: 'none', 
+                border: 'none', 
+                cursor: 'pointer', 
+                padding: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
             >
-              <span className="text-2xl">{t === 'Reclamação' ? '😠' : t === 'Sugestão' ? '💡' : '❤️'}</span>
-              {t}
+              <ArrowLeft size={24} color="#6B7280" />
             </button>
-          ))}
-        </div>
+            <div className="titulo-principal" style={{ margin: 0 }}>
+              <MessageSquare className="icone-destaque" size={32} />
+              <h1>Ouvidoria</h1>
+            </div>
+          </div>
+          
+          <p className="subtitulo">Sua manifestação é muito importante. Por favor, selecione o tipo abaixo e descreva o ocorrido.</p>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="grid grid-cols-2 gap-4">
+          <label className="label-texto">Qual o tipo da sua manifestação?</label>
+          
+          {/* Grid de Seleção */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '24px' }}>
+            <CardSelecao id="reclamacao" icone={AlertCircle} label="Reclamação" />
+            <CardSelecao id="sugestao" icone={Lightbulb} label="Sugestão" />
+            <CardSelecao id="elogio" icone={Heart} label="Elogio" />
+          </div>
+
+          {/* Campos empilhados no celular */}
+          <div className="grid-formulario-mobile" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Setor</label>
-              <select className="w-full p-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-red-500">
-                <option>Selecione (opcional)</option>
-                <option>Pronto Atendimento</option>
-                <option>Internação</option>
+              <label className="label-texto">Setor (opcional)</label>
+              <select className="campo-texto" style={{ marginBottom: 0 }}>
+                <option>Selecione...</option>
+                <option>Recepção</option>
+                <option>Enfermagem</option>
+                <option>Médico</option>
+                <option>Limpeza</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Data do ocorrido</label>
-              <input type="date" className="w-full p-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-red-500" />
+              <label className="label-texto">Data do ocorrido</label>
+              <input type="date" className="campo-texto" style={{ marginBottom: 0 }} />
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Descrição *</label>
-            <textarea required placeholder="Conte o que aconteceu. Evite informar dados clínicos." className="w-full p-4 border border-gray-300 rounded-xl h-32 outline-none focus:ring-2 focus:ring-red-500"></textarea>
-          </div>
+          <label className="label-texto">Descreva o ocorrido *</label>
+          <textarea 
+            className="campo-texto" 
+            rows={4} 
+            placeholder="Conte o que aconteceu com o máximo de detalhes possível. Não inclua dados pessoais."
+          ></textarea>
 
-          <button type="submit" className="bg-red-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-red-700 transition mt-4">
+          <button 
+            className="botao-principal" 
+            onClick={() => navigate('/sucesso')}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+          >
+            <Send size={20} />
             Enviar Manifestação
           </button>
-        </form>
+
+        </div>
       </div>
     </div>
   );
-} 
+}
