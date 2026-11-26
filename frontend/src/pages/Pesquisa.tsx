@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BotaoRosto } from '../components/BotaoRosto';
 import { api } from '../services/api';
-import { User, Clock, FileText, HeartPulse, Stethoscope, Building2, Sparkles } from 'lucide-react';
+import { User, Clock, FileText, HeartPulse, Stethoscope, Building2, Sparkles, MessageSquare } from 'lucide-react';
 
 export function Pesquisa() {
   const navigate = useNavigate();
@@ -12,7 +12,8 @@ export function Pesquisa() {
     turno: '', quem_responde: '', tipo_atendimento: '', setor_id: null, 
     nota_recepcao: 0, nota_tempo_espera: 0, nota_clareza_info: 0, nota_enfermagem: 0, nota_medico: 0,
     nota_estrutura: 0, nota_limpeza: 0, nota_nps: -1,
-    ponto_positivo: '', ponto_melhorar: '', tipo_manifestacao: 'pesquisa'
+    ponto_positivo: '', ponto_melhorar: '', tipo_manifestacao: 'pesquisa',
+    nome_paciente: '', telefone_paciente: '' // NOVOS CAMPOS AQUI
   });
 
   const avancar = (campo: string, valor: any) => {
@@ -26,6 +27,7 @@ export function Pesquisa() {
       
       await api.post('/avaliacoes', {
         ...dados,
+        escala_id: null,
         data_atendimento: dataFormatada, 
       });
       navigate('/sucesso');
@@ -35,12 +37,8 @@ export function Pesquisa() {
     }
   };
 
-  // Componente visual interno usando CSS clássico
   const BotaoOpcao = ({ icone: Icone, label, selecionado, onClick }: any) => (
-    <button
-      onClick={onClick}
-      className={`botao-opcao ${selecionado ? 'ativo' : ''}`}
-    >
+    <button onClick={onClick} className={`botao-opcao ${selecionado ? 'ativo' : ''}`}>
       <Icone size={24} />
       {label}
     </button>
@@ -50,16 +48,12 @@ export function Pesquisa() {
     <div className="pesquisa-container">
       <div className="pesquisa-card">
         
-        {/* Barra de Progresso */}
         <div className="progress-bar-bg">
-          <div 
-            className="progress-bar-fill" 
-            style={{ width: `${(etapa / 12) * 100}%` }}
-          ></div>
+          <div className="progress-bar-fill" style={{ width: `${(etapa / 12) * 100}%` }}></div>
         </div>
 
         <div className="pesquisa-conteudo">
-          {/* ETAPA 1: Boas Vindas e Turno */}
+          {/* ETAPA 1 */}
           {etapa === 1 && (
             <div className="animar-entrada">
               <div className="titulo-principal">
@@ -77,7 +71,7 @@ export function Pesquisa() {
             </div>
           )}
 
-          {/* ETAPA 2: Quem está respondendo */}
+          {/* ETAPA 2 */}
           {etapa === 2 && (
             <div className="animar-entrada">
               <h2 className="titulo-pergunta">Quem está respondendo esta pesquisa?</h2>
@@ -89,7 +83,7 @@ export function Pesquisa() {
             </div>
           )}
 
-          {/* ETAPA 3: Tipo de atendimento */}
+          {/* ETAPA 3 */}
           {etapa === 3 && (
             <div className="animar-entrada">
               <h2 className="titulo-pergunta">Qual o tipo do seu atendimento?</h2>
@@ -101,7 +95,7 @@ export function Pesquisa() {
             </div>
           )}
 
-          {/* ETAPAS 4 a 10: Perguntas com Carinhas */}
+          {/* ETAPAS 4 a 10 */}
           {[
             { id: 'nota_recepcao', titulo: 'Atendimento da Recepção', icone: User },
             { id: 'nota_tempo_espera', titulo: 'Tempo de Espera', icone: Clock },
@@ -134,7 +128,7 @@ export function Pesquisa() {
             );
           })}
 
-          {/* ETAPA 11: NPS (Escala 0 a 10) */}
+          {/* ETAPA 11 */}
           {etapa === 11 && (
             <div className="animar-entrada">
               <h2 className="titulo-pergunta">De 0 a 10, qual a chance de você recomendar o FHDOD?</h2>
@@ -149,7 +143,6 @@ export function Pesquisa() {
                     else if (nota <= 8) classeCor = 'amarelo';
                     else classeCor = 'verde';
                   }
-
                   return (
                     <button
                       key={nota}
@@ -162,17 +155,13 @@ export function Pesquisa() {
                 })}
               </div>
               
-              <button
-                disabled={dados.nota_nps === -1}
-                onClick={() => setEtapa(12)}
-                className="botao-principal"
-              >
+              <button disabled={dados.nota_nps === -1} onClick={() => setEtapa(12)} className="botao-principal">
                 Continuar
               </button>
             </div>
           )}
 
-          {/* ETAPA 12: Comentários Finais */}
+          {/* ETAPA 12 */}
           {etapa === 12 && (
             <div className="animar-entrada">
               <h2 className="titulo-pergunta">Quase lá!</h2>
@@ -180,7 +169,7 @@ export function Pesquisa() {
               <label className="label-texto">O que foi positivo no seu atendimento?</label>
               <textarea 
                 className="campo-texto"
-                rows={3}
+                rows={2}
                 placeholder="Deixe seu elogio..."
                 value={dados.ponto_positivo}
                 onChange={e => setDados(prev => ({ ...prev, ponto_positivo: e.target.value }))}
@@ -189,14 +178,48 @@ export function Pesquisa() {
               <label className="label-texto">O que podemos melhorar?</label>
               <textarea 
                 className="campo-texto"
-                rows={3}
+                rows={2}
                 placeholder="Deixe sua sugestão ou crítica..."
                 value={dados.ponto_melhorar}
                 onChange={e => setDados(prev => ({ ...prev, ponto_melhorar: e.target.value }))}
               />
 
-              <button onClick={enviarPesquisa} className="botao-principal">
+              {/* NOVOS CAMPOS DE IDENTIFICAÇÃO */}
+              <div style={{ backgroundColor: '#FEF2F2', padding: '16px', borderRadius: '12px', marginBottom: '24px', border: '1px solid #FCA5A5' }}>
+                <p style={{ fontSize: '14px', fontWeight: '600', color: '#991B1B', marginBottom: '12px' }}>
+                  Quer que a Ouvidoria entre em contato? (Opcional)
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <input 
+                    type="text" 
+                    placeholder="Seu Nome" 
+                    className="campo-texto" 
+                    style={{ marginBottom: 0, padding: '12px' }} 
+                    value={dados.nome_paciente || ''}
+                    onChange={e => setDados(prev => ({ ...prev, nome_paciente: e.target.value }))}
+                  />
+                  <input 
+                    type="tel" 
+                    placeholder="Telefone / WhatsApp" 
+                    className="campo-texto" 
+                    style={{ marginBottom: 0, padding: '12px' }} 
+                    value={dados.telefone_paciente || ''}
+                    onChange={e => setDados(prev => ({ ...prev, telefone_paciente: e.target.value }))}
+                  />
+                </div>
+              </div>
+
+              <button onClick={enviarPesquisa} className="botao-principal" style={{ marginBottom: '12px' }}>
                 Finalizar e Enviar
+              </button>
+
+              <button 
+                onClick={() => navigate('/ouvidoria')} 
+                className="botao-secundario" 
+                style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+              >
+                <MessageSquare size={20} />
+                Ir para a Ouvidoria
               </button>
             </div>
           )}
@@ -205,4 +228,4 @@ export function Pesquisa() {
       </div>
     </div>
   );
-}
+} 
