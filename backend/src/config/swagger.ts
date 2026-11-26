@@ -8,7 +8,7 @@ const options = {
       version: '1.0.0',
       description: 'Documentação interativa da API do sistema FHDOD.',
     },
-    servers: [{ url: 'http://localhost:3333/api' }],
+    servers: [{ url: 'https://fhdod-hospital.onrender.com/api' }], 
   },
   apis: ['./src/routes/*.ts'], // Onde estão as rotas
 };
