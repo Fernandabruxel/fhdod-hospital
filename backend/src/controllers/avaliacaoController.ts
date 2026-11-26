@@ -16,13 +16,14 @@ export class AvaliacaoController {
       const protocolo = `AV-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 99999)).padStart(5, '0')}`;
       const id = uuidv4();
 
-      let escala_id = null;
-      const [escalas]: any = await pool.query(
-        `SELECT e.id FROM escalas e JOIN equipes eq ON e.equipe_id = eq.id 
-         WHERE eq.setor_id = ? AND e.data_plantao = ? AND e.turno = ?`,
-        [setor_id, data_atendimento, turno]
-      );
-      if (escalas.length > 0) escala_id = escalas[0].id;
+            let escala_id = null;
+      // A busca na tabela escalas foi desativada para o deploy, pois a tabela não existe no Aiven
+      // const [escalas]: any = await pool.query(
+      //   `SELECT e.id FROM escalas e JOIN equipes eq ON e.equipe_id = eq.id 
+      //    WHERE eq.setor_id = ? AND e.data_plantao = ? AND e.turno = ?`,
+      //   [setor_id, data_atendimento, turno]
+      // );
+      // if (escalas.length > 0) escala_id = escalas[0].id;
 
       await pool.query(
         `INSERT INTO avaliacoes (id, protocolo, data_atendimento, turno, quem_responde, 
