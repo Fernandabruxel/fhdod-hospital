@@ -118,6 +118,21 @@ Para validar o funcionamento do sistema, siga este roteiro:
    * Acesse: http://localhost:5173/ouvidoria
    * Teste a seleção entre Reclamação, Sugestão e Elogio (os cards ficam vermelhos ao clicar).
 
+## Acesso ao Projeto (Deploy)
+
+O sistema está hospedado na nuvem e pode ser acessado através dos links abaixo:
+
+* **Frontend (Site / Dashboard / Pesquisa):** 
+  [https://fhdod-frontend.onrender.com/](https://fhdod-frontend.onrender.com/)
+
+* **Backend (API):** 
+  [https://fhdod-hospital.onrender.com](https://fhdod-hospital.onrender.com)
+
+* **Documentação da API (Swagger):** 
+  [https://fhdod-hospital.onrender.com/api-docs](https://fhdod-hospital.onrender.com/api-docs)
+
+> **Nota:** Como o backend está hospedado no plano gratuito do Render, ele pode levar até 50 segundos para "acordar" na primeira requisição. Caso a página demore a carregar, basta aguardar e atualizar.
+
 ---
 
 ## Desenvolvedores
